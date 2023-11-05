@@ -24,6 +24,7 @@ Python version: 3.10.10
 - set up virtual environment: reddit_venv
 - set up new repository on Github
 - sign up new Reddit account and request API
+  
 11.5
 - install praw package to virtual environment
 - Add new folder: scripts
