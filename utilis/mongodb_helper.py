@@ -10,8 +10,9 @@ Configs = configparser.ConfigParser()
 Configs.read(path_to_settings)
 
 mongodb_cred = {'mongo_user_id' : Configs['mongodb_cred']['user_id'],
-'mongo_password' :  Configs['mongodb_cred']['password'],
-'mongo_cluster_name': 'momo78932'}
+                'mongo_password' :  Configs['mongodb_cred']['password'],
+                'mongo_cluster_name': 'momo78932'
+                }
 
 
 # result = collection.insert_one(
@@ -25,10 +26,10 @@ mongodb_cred = {'mongo_user_id' : Configs['mongodb_cred']['user_id'],
 
 class mongodb_connection:
     def __init__(self, mongodb_cred, db_name, collection_name):
-        mongo_user_id = mongodb_cred['mongo_user_id']
-        mongo_password = mongodb_cred['mongo_password']
-        mongo_cluster_name = mongodb_cred['mongo_cluster_name']
-        self.cluster  = MongoClient(f'mongodb+srv://{mongo_user_id}:{mongo_password}@{mongo_cluster_name}.ybq4rku.mongodb.net/?retryWrites=true&w=majority')
+        user_id = mongodb_cred['mongo_user_id']
+        password = mongodb_cred['mongo_password']
+        cluster_name = mongodb_cred['mongo_cluster_name']
+        self.cluster  = MongoClient(f'mongodb+srv://{user_id}:{password}@{cluster_name}.ybq4rku.mongodb.net/?retryWrites=true&w=majority')
         self.db = self.cluster[db_name]
         self.collection = self.db[collection_name]
 
@@ -41,15 +42,86 @@ class mongodb_connection:
         except Exception as e:
             raise(f"Error connecting to Mongodb: {e}")
         
-        # get elements
+    # get documents
+    def get_documents(self, prompt = None):
+        '''
+        get_documents: dictionary -> (list)
+        '''
+        db_items = []
+        for item in self.collection.find(prompt):
+            db_items.append(item)
+        return db_items
+        
+    # drop document(s)
+    def drop_document(self, prompt, drop_one=True):
+        # notify user the results
+        if self.collection.count_documents(prompt, limit = 1) == 0:
+            print(f'Document: {prompt} doesn\'t exist')
+        elif drop_one:
+            self.collection.delete_one(prompt)
+            print(f'Document: {prompt} successfully deleted')
+        else:
+            res = self.collection.delete_many(prompt)
+            print(f'{res.deleted_count} documents matching pattern {prompt} successfully deleted')
 
-        # drop elements
+    
 
-        # add one element
+    # add many documents
+    def add_document(self, item):
+        '''
+        item can be list of items or single item
+        add_document: (listof doc, bool) -> None
+        Effect: add list of documents to self
+        '''
+        if type(item) == list:
+            self.collection.insert_many(item)
+            print(f'{len(item)} documents successfully added')
+        elif type(item) == dict:
+            self.collection.insert_one(item)
+            print(f'Documents successfully added')
+        else:
+            print('Failed. Provide valid type of document')
 
-        # add many elements
+
+
+
+
+
+
+
         
 if __name__ == "__main__":
-    mongodb_connection(mongodb_cred, 'aggregation_example', 'nothing')
+    client = mongodb_connection(mongodb_cred, 'aggregation_example', 'things')
+    # for x in client.get_documents():
+    #     print (x)
+    
+    # --------drop_document-----------
+    item = {"x": 2, "tags": ["mouse", "cat", "dog"]}
+
+    # print(len(client.get_documents(item)))
+    # # delete an existing item
+    # client.drop_document(item)  
+    # print(len(client.get_documents(item)))
+
+    # item = {"x": 2}
+    # # delete many items
+    # print(len(client.get_documents(item)))
+    # client.drop_document(item,drop_one=False)  
+    # print(len(client.get_documents(item)))
+
+    # # delete an non-existing item
+    # client.drop_document({"x": 3, "tags": ['dog', 'dog']})
+
+    # ---------add_document--------
+    # mydict = { "name": "Peter", "address": "Lowstreet 27" }
+    # client.add_document(mydict)
+    items = [
+      { 'item': "card", 'qty': 15 },
+      { 'item': "envelope", 'qty': 20 },
+      { 'item': "stamps" , 'qty': 30 }
+    ]
+    client.add_document(items)
+
+    
 
     
