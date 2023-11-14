@@ -25,7 +25,7 @@ def get_thread(userAgentName, subredditName, numSubreddit):
         )
         r = redis_connection('6379', 1, 'localhost')
         mgdb_client = mongodb_connection(mongodb_cred, 'chatgpt_reddit_thread', 'top_posts')
-        distinct_post_id = r.get_elements('distinct_reddit_post_id')
+        distinct_post_id = r.get_elements('reddit_title_id')
         submission_document = {'subthread': subredditName, 'Date': datetime.now().strftime('%Y-%m-%d')}
         submission_id_to_add = set()
         submissions = []
@@ -41,8 +41,20 @@ def get_thread(userAgentName, subredditName, numSubreddit):
         raise(f"Error accesing Reddit Thread {subredditName}: {e}")
     
 
+
+def run_get_thread():
+    userAgentName = 'airflow'
+    subredditName = 'ChatGPT'
+    numSubreddit = 10
+    get_thread(userAgentName, subredditName, numSubreddit)
+
+
+
+
 if __name__ == "__main__":
     userAgentName = 'testing'
     subredditName = 'ChatGPT'
     numSubreddit = 10
     get_thread(userAgentName, subredditName, numSubreddit)
+
+

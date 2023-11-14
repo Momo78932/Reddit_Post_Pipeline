@@ -83,7 +83,8 @@ class mongodb_connection:
             print('Failed. Provide valid type of document')
 
 
-
+def check_mongodb_connection():
+    mongodb_connection(mongodb_cred, 'aggregation_example', 'things')
 
 
 
