@@ -44,11 +44,25 @@ Python version: 3.10.10
 - update read.md
 
 11.9
-- Add functions: get_documents, drop_document, and add_document to file: mongodb_helper.py
+- add functions: get_documents, drop_document, and add_document to file: mongodb_helper.py
 - update get_reddit_thread to pull and store submission id to Redis and posts info to Mongodb
 - run get_thread function for 11.9 top posts
 
 11.10 
-- run get_thread function for 11.9 top posts
+- run get_thread function for 11.10 top posts
+
+11.11
+- run get_thread function for 11.11 top posts
+
+11.12
+- run get_thread function for 11.12 top posts
+
+11.13
+- add new folder: dags
+- add new file: load_reddit_thread.py
+- add new function to mongodb_helper.py
+- add new function to redit_helper.py
+- found bug: duplicate item in Mongodb
+- update get_thread function in get_reddit_thread.py
 
 

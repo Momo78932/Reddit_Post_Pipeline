@@ -16,7 +16,7 @@ class redis_connection:
     
     # get elements
     def get_elements(self, key):
-        return self.client.smembers(key)
+        return [value for value in self.client.smembers(key)]
     
     # drop elements
     def drop_elements(self, key, member):
@@ -35,7 +35,8 @@ class redis_connection:
             self.client.sadd(key, member)
             print(f"Member added: {member} to key {key}")
 
-
+def check_redis_connection():
+    redis_connection('6379', 1, 'localhost')
 
 if __name__ == "__main__":
     r = redis_connection('6379', 1, 'localhost')
@@ -44,9 +45,9 @@ if __name__ == "__main__":
     # print(r.get_elements('nset'))
     # r.drop_elements('nset', 1)
     print(r.get_elements('nset'))
-    r.add_elements('nset', 3)
-    print(r.get_elements('nset'))
-    r.add_elements('nset', 1)
-    print(r.get_elements('nset'))
+    # r.add_elements('nset', 3)
+    # print(r.get_elements('nset'))
+    # r.add_elements('nset', 1)
+    # print(r.get_elements('nset'))
 
 
