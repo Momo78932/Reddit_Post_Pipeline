@@ -16,16 +16,16 @@ client_id=Configs['reddit_cred']['client_id']
 client_secret=Configs['reddit_cred']['client_secret']
 
 
-def get_thread(userAgentName, subredditName, numSubreddit):
+def get_thread(userAgentName, subredditName, numSubreddit, rds_port, rds_dbNum, rds_host, rds_key, mgdb_db_name, mgdb_collection_name):
     try:
         reddit = praw.Reddit(
         client_id=client_id,
         client_secret=client_secret,
         user_agent=userAgentName
         )
-        r = redis_connection('6379', 1, 'localhost')
-        mgdb_client = mongodb_connection(mongodb_cred, 'chatgpt_reddit_thread', 'top_posts')
-        distinct_post_id = r.get_elements('reddit_title_id')
+        r = redis_connection(rds_port, rds_dbNum, rds_host)
+        mgdb_client = mongodb_connection(mongodb_cred, mgdb_db_name, mgdb_collection_name)
+        distinct_post_id = r.get_elements(rds_key)
         submission_document = {'subthread': subredditName, 'Date': datetime.now().strftime('%Y-%m-%d')}
         submission_id_to_add = set()
         submissions = []
@@ -34,19 +34,33 @@ def get_thread(userAgentName, subredditName, numSubreddit):
                 submissions.append({'title': submission.title, 'body': submission.selftext})
                 submission_id_to_add.add(submission.id)
         submission_document['submissions'] = submissions
-        mgdb_client.add_document(submission_document)
-        for id in submission_id_to_add:
-            r.add_elements('reddit_title_id', id)
+        # print(len(submission_document['submissions']))
+        if len(submission_document['submissions']) != 0:
+            mgdb_client.add_document(submission_document)
+            for id in submission_id_to_add:
+                r.add_elements(rds_key, id)
+        else:
+            print("No document to add")
     except Exception as e:
         raise(f"Error accesing Reddit Thread {subredditName}: {e}")
     
 
 
 def run_get_thread():
-    userAgentName = 'airflow'
-    subredditName = 'ChatGPT'
-    numSubreddit = 10
-    get_thread(userAgentName, subredditName, numSubreddit)
+    rdt_userAgentName = 'airflow'
+    rdt_subredditName = 'ChatGPT'
+    rdt_numSubreddit = 10
+
+    rds_port = '6379'
+    rds_dbNum = 1
+    rds_host = 'localhost'
+    rds_key = 'reddit_title_id'
+
+    mgdb_db_name = 'chatgpt_reddit_thread'
+    mgdb_collection_name = 'top_posts'
+
+
+    get_thread(rdt_userAgentName, rdt_subredditName, rdt_numSubreddit, rds_port, rds_dbNum, rds_host, rds_key, mgdb_db_name, mgdb_collection_name)
 
 
 
@@ -55,6 +69,16 @@ if __name__ == "__main__":
     userAgentName = 'testing'
     subredditName = 'ChatGPT'
     numSubreddit = 10
-    get_thread(userAgentName, subredditName, numSubreddit)
+
+    rds_port = '6379'
+    rds_dbNum = 1
+    rds_host = 'localhost'
+    rds_key = 'nset'
+
+    mgdb_db_name = 'chatgpt_reddit_thread'
+    mgdb_collection_name = 'top_posts'
+
+
+    get_thread(userAgentName, subredditName, numSubreddit, rds_port, rds_dbNum, rds_host, rds_key, mgdb_db_name, mgdb_collection_name)
 
 
