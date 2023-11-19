@@ -65,4 +65,6 @@ Python version: 3.10.10
 - found bug: duplicate item in Mongodb
 - update get_thread function in get_reddit_thread.py
 
-
+11.17
+- parameterized get_thread function in get_reddit_thread.py
+- update get_thread function such that no new document will be created if posts id exists in redis database
