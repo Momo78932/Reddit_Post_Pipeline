@@ -1,2 +1,4 @@
 __pycache__/
 *.ini
+dump.rdb
+test.py

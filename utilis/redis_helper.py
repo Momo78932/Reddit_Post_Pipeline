@@ -1,6 +1,6 @@
 import redis
-# used to interact with local redis client
 
+# used to interact with local redis client
 class redis_connection:
     def __init__(self, port, dbNum, host):
         self.port = port
@@ -37,17 +37,3 @@ class redis_connection:
 
 def check_redis_connection():
     redis_connection('6379', 1, 'localhost')
-
-if __name__ == "__main__":
-    r = redis_connection('6379', 1, 'localhost')
-    # print(r.get_elements('nset'))
-    # r.drop_elements('nset', 9)
-    # print(r.get_elements('nset'))
-    # r.drop_elements('nset', 1)
-    print(r.get_elements('nset'))
-    # r.add_elements('nset', 3)
-    # print(r.get_elements('nset'))
-    # r.add_elements('nset', 1)
-    # print(r.get_elements('nset'))
-
-

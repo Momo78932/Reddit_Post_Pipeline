@@ -15,15 +15,6 @@ mongodb_cred = {'mongo_user_id' : Configs['mongodb_cred']['user_id'],
                 }
 
 
-# result = collection.insert_one(
-#         {
-#             'subreddit': 'chatgpt',
-#             "date": "2023-11-07",
-#             "submission": {"title": "selftext"}
-#         }
-# )
-# result.inserted_id
-
 class mongodb_connection:
     def __init__(self, mongodb_cred, db_name, collection_name):
         user_id = mongodb_cred['mongo_user_id']
@@ -91,38 +82,6 @@ def check_mongodb_connection():
 
 
         
-if __name__ == "__main__":
-    client = mongodb_connection(mongodb_cred, 'aggregation_example', 'things')
-    # for x in client.get_documents():
-    #     print (x)
-    
-    # --------drop_document-----------
-    item = {"x": 2, "tags": ["mouse", "cat", "dog"]}
 
-    # print(len(client.get_documents(item)))
-    # # delete an existing item
-    # client.drop_document(item)  
-    # print(len(client.get_documents(item)))
-
-    # item = {"x": 2}
-    # # delete many items
-    # print(len(client.get_documents(item)))
-    # client.drop_document(item,drop_one=False)  
-    # print(len(client.get_documents(item)))
-
-    # # delete an non-existing item
-    # client.drop_document({"x": 3, "tags": ['dog', 'dog']})
-
-    # ---------add_document--------
-    # mydict = { "name": "Peter", "address": "Lowstreet 27" }
-    # client.add_document(mydict)
-    items = [
-      { 'item': "card", 'qty': 15 },
-      { 'item': "envelope", 'qty': 20 },
-      { 'item': "stamps" , 'qty': 30 }
-    ]
-    client.add_document(items)
-
-    
 
     
