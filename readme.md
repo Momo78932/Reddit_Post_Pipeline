@@ -27,9 +27,42 @@ Python version: 3.10.10
   
 11.5
 - install praw package to virtual environment
-- Add new folder: scripts
-- Add get_reddit_thread.py file to grab text from top posts in folder scripts
-- Add new folder: utilis - helper functions
-- Add redis_helper.py file to make change in local redis database
-Edit test.py
-- Edit readme.md
+- add new folder: scripts
+- add get_reddit_thread.py file to grab text from top posts in folder scripts
+- add new folder: utilis - helper functions
+- add redis_helper.py file to make change in local redis database
+- edit test.py
+- adit readme.md
+
+11.7
+- add duplicate check feature to function get_thread in file get_reddit_thread.py
+- add __init__.py to folder utilis
+- sign up and create account in Mongodb.atlas
+- create new cluster in Mongodb: momo78932
+- add new file: mongodb_helper.py to make change in Mongodb database in folder utilis
+- edit test.py
+- update read.md
+
+11.9
+- add functions: get_documents, drop_document, and add_document to file: mongodb_helper.py
+- update get_reddit_thread to pull and store submission id to Redis and posts info to Mongodb
+- run get_thread function for 11.9 top posts
+
+11.10 
+- run get_thread function for 11.10 top posts
+
+11.11
+- run get_thread function for 11.11 top posts
+
+11.12
+- run get_thread function for 11.12 top posts
+
+11.13
+- add new folder: dags
+- add new file: load_reddit_thread.py
+- add new function to mongodb_helper.py
+- add new function to redit_helper.py
+- found bug: duplicate item in Mongodb
+- update get_thread function in get_reddit_thread.py
+
+
