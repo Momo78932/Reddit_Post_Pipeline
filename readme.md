@@ -65,4 +65,15 @@ Python version: 3.10.10
 - found bug: duplicate item in Mongodb
 - update get_thread function in get_reddit_thread.py
 
+11.19
+- add new folder: SQL in scripts 
+- add new file create_table.sql to folder SQL
+	- include sql script to add tables: RedditTopic and PostSentiment to MySQL
+- add new file mysql_table.md to folder SQL
+	- include description of the two tables: RedditTopic and PostSentiment
 
+11.20 
+- update .gitignore file to hide __pycache__, dump.rdb, and test.py
+- move unit testing codes to test.py
+- update get_thread function 
+turn function arguments into dictionaries
