@@ -4,6 +4,7 @@ import sys
 sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
 from utilis.redis_helper import redis_connection
 from utilis.mongodb_helper import mongodb_connection, mongodb_cred
+from utilis.settings import *
 from datetime import datetime
 
 path_to_settings = "/Users/liuminghuang/Repos/Reddit_Post_Pipeline/secrets.ini"

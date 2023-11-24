@@ -13,3 +13,5 @@ CREATE TABLE PostSentiment (
     subjectivity FLOAT CHECK (subjectivity >= -1 AND subjectivity <= 1),
     polarity FLOAT CHECK (polarity >= -1 AND polarity <= 1)
 );
+
+
