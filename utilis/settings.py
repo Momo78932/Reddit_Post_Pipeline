@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+default_date = datetime.today().strftime('%Y-%m-%d')
 reddit_info = {
     'userAgentName': 'airflow',
     'subredditName': 'ChatGPT',
