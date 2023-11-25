@@ -7,6 +7,8 @@ sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
 from scripts.get_reddit_thread import run_get_thread
 from utilis.redis_helper import check_redis_connection
 from utilis.mongodb_helper import check_mongodb_connection
+from scripts.post_sentiment_processing import *
+import datetime 
 
 
 with DAG(
@@ -29,6 +31,15 @@ with DAG(
         task_id = 'check_mongodb_connection',
         python_callable= check_mongodb_connection,
     )
+    check_mysql_connction = PythonOperator(
+        task_id = 'check_MySQL_connection',
+        python_callable= check_sql_connection,
+    )
+    load_thread_to_sql = PythonOperator(
+        task_id = 'load_thread_mysql',
+        python_callable= run_update_sql,
+    )
 
 
-[check_mdb_connction, check_rds_connection] >> load_thread
+
+[check_mdb_connction, check_rds_connection] >> load_thread >> check_mysql_connction >> load_thread_to_sql
