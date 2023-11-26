@@ -36,6 +36,7 @@ class mongodb_connection:
     # get documents
     def get_documents(self, prompt = None):
         '''
+        get_documents(self, prompt = None): return a list of documentation from mongodb client that matches prompt pattern, if prompt is None, return all documentations
         get_documents: dictionary -> (list)
         '''
         db_items = []
@@ -45,6 +46,10 @@ class mongodb_connection:
         
     # drop document(s)
     def drop_document(self, prompt, drop_one=True):
+        '''
+        drop_document(self, prompt, drop_one=True): drop documentations that matches prompt pattern
+        drop_document: dict bool -> None
+        '''
         # notify user the results
         if self.collection.count_documents(prompt, limit = 1) == 0:
             print(f'Document: {prompt} doesn\'t exist')
@@ -60,7 +65,7 @@ class mongodb_connection:
     # add many documents
     def add_document(self, item):
         '''
-        item can be list of items or single item
+        add_document(self, item): item can be list of items or single item
         add_document: (listof doc, bool) -> None
         Effect: add list of documents to self
         '''
@@ -75,6 +80,9 @@ class mongodb_connection:
 
 
 def check_mongodb_connection():
+    '''
+    check_mongodb_connection(): for airflow to run to check mongodb connection
+    '''
     mongodb_connection(mongodb_cred, 'aggregation_example', 'things')
 
 

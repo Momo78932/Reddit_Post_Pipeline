@@ -18,6 +18,9 @@ client_secret=Configs['reddit_cred']['client_secret']
 
 
 def get_thread(rdt_info, rds_info, mgdb_info):
+    '''
+    get_thread: load daily Reddit posts info to redis and Mongodb database
+    '''
     try:
         reddit = praw.Reddit(
         client_id=client_id,
@@ -47,5 +50,8 @@ def get_thread(rdt_info, rds_info, mgdb_info):
 
 
 def run_get_thread():
+    '''
+    run_get_thread: for airflow to run get_thread function
+    '''
     get_thread(reddit_info, redis_info, mongodb_info)
 

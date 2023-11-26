@@ -72,6 +72,9 @@ def update_sql_db(date):
                         order += 1
         
 def check_sql_connection():
+    '''
+    check_sql_connection: for airflow to check mysql connection
+    '''
     try:
         # Establish a database connection
         connection = mysql.connector.connect(
@@ -103,4 +106,7 @@ def check_sql_connection():
 
 
 def run_update_sql():
+    '''
+    run_update_sql: for airflow to run update_sql_db function
+    '''
     update_sql_db(default_date)

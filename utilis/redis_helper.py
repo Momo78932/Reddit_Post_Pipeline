@@ -16,10 +16,18 @@ class redis_connection:
     
     # get elements
     def get_elements(self, key):
+        '''
+        get_elements(self, key): return list of all items in key
+        get_elements: str -> (listof Any)
+        '''
         return [value for value in self.client.smembers(key)]
     
     # drop elements
     def drop_elements(self, key, member):
+        '''
+        drop_elements(self, key, member): delete member from key
+        drop_elements: str, Any -> None
+        '''
         if self.client.sismember(key, member):
             res = self.client.srem(key, member)
             if res > 0:
@@ -29,6 +37,10 @@ class redis_connection:
 
     # add elements
     def add_elements(self, key, member):
+        '''
+        add_elements(self, key, member): add member to key
+        add_elements: str Any -> None
+        '''
         if self.client.sismember(key, member):
             print(f"Member existed: {member} in key {key}")
         else:
@@ -36,4 +48,7 @@ class redis_connection:
             print(f"Member added: {member} to key {key}")
 
 def check_redis_connection():
+    '''
+    check_redis_connection(): for airflow run to check redis connection
+    '''
     redis_connection('6379', 1, 'localhost')
