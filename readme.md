@@ -1,3 +1,4 @@
+# README.md
 
 ## Reddit Post Sentiment Analysis Data Pipeline
 
@@ -50,10 +51,17 @@ To set up the pipeline locally, first, you will have to set up a virtual environ
 | Package         | Version |
 |-----------------|---------|
 | Redis server    | v7.2.3  |
-|PyMongo 		  | v3.11.0  
+| PyMongo 		  | v3.11.0 |
 | Airflow         | v2.3.1  |
 | MySQL           | v14.14  |
+| TestBlob		  |v0.17.1  |
 
+* After installing testblob, remember to download necessary corpora used by TextBlob with code below
+
+```
+from textblob import download_corpora 
+download_corpora.download_all()
+```
  
  **Crediential File**
 You will then have to add a credentials file for accessing reddit API, MongoDB connection, and MySQL connection.  Then populate the `secrets.ini` file with the following template:
@@ -77,7 +85,3 @@ Source|What to do
 Reddit API|Create a reddit developer application at https://www.reddit.com/prefs/apps/ to get the above information.
 MongoDB| Create a MongoDB account at [MongoDB](https://www.mongodb.com/cloud/atlas/lp/try4?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core_retarget-brand_gic-null_amers-us-ca_ps-all_desktop_eng_lead&utm_term=mongodb&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=14291004479&adgroup=128837427347&cq_cmp=14291004479&gad_source=1&gclid=CjwKCAiA04arBhAkEiwAuNOsIrm8Kz1SvZaEEUQrQQynJbCXMT9B7DmUVHIU26poPtOvjpMAnK96jBoCMXwQAvD_BwE) 
 MySQL | password set at installation
-
-
-
-
