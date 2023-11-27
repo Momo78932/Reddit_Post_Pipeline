@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 default_date = datetime.today().strftime('%Y-%m-%d')
+mysql_database = "testing"
 reddit_info = {
     'userAgentName': 'airflow',
     'subredditName': 'ChatGPT',
-    'numSubreddit': 10,
+    'numSubreddit': 40,
 }
 redis_info = {
     'rds_port': '6379',

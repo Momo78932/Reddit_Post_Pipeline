@@ -4,6 +4,7 @@ sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
 from utilis.mongodb_helper import mongodb_connection, mongodb_cred
 from utilis.settings import *
 from scripts.SQL.interact_with_sql_db_query import *
+from textblob import TextBlob
 
 import mysql.connector
 from mysql.connector import Error
@@ -23,53 +24,61 @@ def get_mongodb_data(subredditName, db_name, collection_name, date):
     '''
     client = mongodb_connection(mongodb_cred, db_name, collection_name)
     prompt = {'subthread':subredditName,'Date':date}
-    return client.get_documents(prompt)
+    l_doc = client.get_documents(prompt)
+    final_doc = l_doc[0]
+    l_submissions = list(map(lambda d: d['submissions'], l_doc))
+    final_submission = {}
+    for d in l_submissions:
+        final_submission.update(d)
+    final_doc['submissions'] = final_submission
+    return [final_doc]
+    
+        
 
 
-def update_sql_db(date):
+def update_sql_db(mysql_database, date):
     '''
     update_sql_db: update redditTopic and Postsentiment table in MySQL
     '''
     connection = mysql.connector.connect(
         host=Configs['mysql_cred']['host'],       
-        database='reddit_thread_analysis',
+        database= mysql_database,
         user=Configs['mysql_cred']['user'],     
         password=Configs['mysql_cred']['password'] 
     )
     mgdb_data= get_mongodb_data(reddit_info['subredditName'],mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name'], date)
     if mgdb_data != []:
         mgdb_data = mgdb_data[0]
-        # Check if the connection was successful
-        if connection.is_connected():
-            mycursor = connection.cursor()
+        mycursor = connection.cursor()
+        # update RedditTopic table
+        update_RedditTopic_table_query = check_insert_query.format(mysql_database,mgdb_data['subthread'], mysql_database, mgdb_data['subthread'])
+        mycursor.execute(update_RedditTopic_table_query)
+        connection.commit()
 
-            # update RedditTopic table
-            update_RedditTopic_table_query = check_insert_query.format(mgdb_data['subthread'],mgdb_data['subthread'])
-            mycursor.execute(update_RedditTopic_table_query)
-            connection.commit()
-
-            # fetching id of corresponding subreddit_name
-            fetching_id_query = get_id.format(mgdb_data['subthread'])
-            mycursor.execute(fetching_id_query)
-            result = mycursor.fetchall()
-            if result != []:
-                order = 1
-                subreddit_id = result[0][0]
-                mobgodb_default_id = str(mgdb_data['_id'])
-                DateGenerated = mgdb_data['Date']
-                for reddit_post in mgdb_data['submissions']:
-                    post_id = mobgodb_default_id + str(order)
-                    # check if id exists in mysql database
-                    get_post_id_query = get_post_id.format(post_id)
-                    mycursor.execute(get_post_id_query)
-                    isin_id = mycursor.fetchall()
-                    if isin_id == []:
-                        DateInserted = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        title = mgdb_data['submissions'][order-1]['title']
-                        variables = (post_id, subreddit_id, DateGenerated, DateInserted, title, post_id, subreddit_id, DateGenerated, DateInserted, title)
-                        mycursor.execute(insert_post_data, variables)
-                        connection.commit()
-                        order += 1
+        # fetching id of corresponding subreddit_name
+        fetching_id_query = get_id.format(mysql_database, mgdb_data['subthread'])
+        mycursor.execute(fetching_id_query)
+        result = mycursor.fetchall()
+        if result != []:
+            order = 1
+            subreddit_id = result[0][0]
+            mobgodb_default_id = str(mgdb_data['_id'])
+            DateGenerated = mgdb_data['Date']
+            for _ in mgdb_data['submissions']:
+                post_id = mobgodb_default_id + str(order)
+                get_post_id_query = get_post_id.format(mysql_database, post_id)
+                mycursor.execute(get_post_id_query)
+                isin_id = mycursor.fetchall()
+                if isin_id == []:
+                    DateInserted = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    title = mgdb_data['submissions'][order-1]['title']
+                    blob = TextBlob(title)
+                    polarity = round(blob.sentiment[0],3)
+                    subjectivity = round(blob.sentiment[1],3)
+                    insert_post_data_query = insert_post_data.format(mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, polarity, subjectivity)
+                    mycursor.execute(insert_post_data_query)
+                    connection.commit()
+                    order += 1
         
 def check_sql_connection():
     '''
@@ -109,4 +118,4 @@ def run_update_sql():
     '''
     run_update_sql: for airflow to run update_sql_db function
     '''
-    update_sql_db(default_date)
+    update_sql_db(mysql_database,default_date)
