@@ -11,6 +11,7 @@
 - [2023-11-20](#2023-11-20)
 - [2023-11-22](#2023-11-22)
 - [2023-11-26](#2023-11-26)
+- [2023-11-29](#2023-11-29)
 
 ## 2023-11-01
 
@@ -104,4 +105,24 @@
 - Updated `settings.py` in `utils` to include new configuration settings.
 
 ### Notes
-- The branch `11_26_function_review` indicates a focus on reviewing and refining functions, likely in preparation for a merge or deployment.
+- The branch `11_26_function_review` indicates a focus on reviewing and refining functions.
+
+## 2023-11-29
+
+#### Added
+- Introduced `reddit_helper.py` in the `utils` directory to encapsulate Reddit API interactions.
+- Created `subredditTopics.txt` in the `utils` directory, allowing users to easily specify and modify the list of subreddit topics for data import.
+
+#### Changed
+- Updated `load_reddit_thread.py` in the `dags` directory with improved thread handling.
+- Revised `get_reddit_thread.py` in the `scripts` directory to iterate over a list of valid subreddits defined by the user.
+- Renamed `load_mysql_data.py` from `dags` to `utils` for better organization and consistency with other utility scripts.
+- Modified `settings.py` in the `utils` directory to accommodate new configuration parameters.
+
+#### Fixed
+- Resolved the "Import Error" in Airflow by adjusting PYTHONPATH and ensuring proper imports.
+
+#### Notes
+- The changes made today were focused on enhancing the robustness of the data collection pipeline from Reddit and improving the manageability of the configurations. The renaming and reorganization of scripts reflect an ongoing effort to maintain a clean and logical structure in the codebase.
+
+
