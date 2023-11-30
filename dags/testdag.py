@@ -19,7 +19,6 @@
 """Example DAG demonstrating the usage of the BashOperator."""
 
 import datetime
-
 import pendulum
 
 from airflow import DAG

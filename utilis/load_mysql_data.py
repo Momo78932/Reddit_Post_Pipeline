@@ -2,6 +2,7 @@ import datetime
 import pendulum
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.operators.empty import EmptyOperator
 import sys
 sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
 from scripts.get_reddit_thread import run_get_thread
