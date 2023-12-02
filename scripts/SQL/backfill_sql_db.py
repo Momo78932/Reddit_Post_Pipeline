@@ -19,7 +19,13 @@ date_list = [(start_date + timedelta(days=x)).strftime('%Y-%m-%d') for x in rang
 
 # implement backfill
 for date in date_list:
-    update_sql_db(mysql_database,date)
+    mysql_connection = mysql.connector.connect(
+        host=Configs['mysql_cred']['host'],       
+        database= mysql_database,
+        user=Configs['mysql_cred']['user'],     
+        password=Configs['mysql_cred']['password'] 
+    )
+    update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name'], date)
 
 
 

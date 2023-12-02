@@ -37,7 +37,7 @@ class mongodb_connection:
     def get_documents(self, prompt = None):
         '''
         get_documents(self, prompt = None): return a list of documentation from mongodb client that matches prompt pattern, if prompt is None, return all documentations
-        get_documents: dictionary -> (list)
+        get_documents: Any -> (listof Dict)
         '''
         db_items = []
         for item in self.collection.find(prompt):
@@ -77,6 +77,34 @@ class mongodb_connection:
             print(f'Documents successfully added')
         else:
             print('Failed. Provide valid type of document')
+
+def get_mongodb_data(subredditlist, db_name, collection_name, date):
+    '''
+    get_mongodb_data(subredditlist, db_name, collection_name, date): get today's post data from Mongodb - 1 dictionary for 1 subreddit
+    get_mongodb_data: (listof Str) Str Str Str -> (listof Dict)
+    '''
+    doc_list = []
+    for subredditName in subredditlist:
+        doc_list.append(get_mongodb_data_single(subredditName, db_name, collection_name, date))  
+    return doc_list
+
+
+def get_mongodb_data_single(subredditName, db_name, collection_name, date):
+    '''
+    get_mongodb_data_single: gether post data for date and subredditName in one dictionary
+    get_mongodb_data_single: Str Str Str Str -> Dict
+    '''
+    client = mongodb_connection(mongodb_cred, db_name, collection_name)
+    prompt = {'subthread':subredditName,'Date':date}
+    l_doc = client.get_documents(prompt)
+    final_doc = l_doc[0]
+    l_submissions = list(map(lambda d: d['submissions'], l_doc))
+
+    final_submission = []
+    for entry in l_submissions:
+        final_submission.extend(entry)
+    final_doc['submissions'] = final_submission
+    return final_doc
 
 
 def check_mongodb_connection():
