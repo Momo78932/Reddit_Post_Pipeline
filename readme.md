@@ -1,6 +1,4 @@
-# README.md
-
-## Reddit Post Sentiment Analysis Data Pipeline
+# Reddit Post Sentiment Analysis Data Pipeline
 
 ## Project Overview
 ### Objective
