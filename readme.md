@@ -18,6 +18,11 @@ NOTE: This project was (fortunately?) created right before the Reddit API terms 
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
+## Project Overview
+![My Project Diagram](/Users/liuminghuang/Repos/Reddit_Post_Pipeline/FlowChart/Drawing10.png  "Project Diagram")
+
+
+
 
 ## Architecture
 
