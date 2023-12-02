@@ -20,6 +20,19 @@ NOTE: This project was (fortunately?) created right before the Reddit API terms 
 
 ## Project Overview
 ![My Project Diagram](./image/flowchart.png "Project flowchart")
+### Objective
+To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
+
+### Process Flow
+
+- **Data Source**: Utilizes the Reddit API, interfaced with the Python `praw` library.
+- **User Input**: Interests specified in `subredditTopics.txt` to guide data collection.
+- **Duplication Check**: Unique post IDs checked against Redis database for uniqueness.
+- **Data Ingestion**: Retrieves a set number of posts per subreddit topic, containing titles and bodies, configured in `settings.txt`.
+- **Sentiment Analysis**: Conducted in a MySQL database.
+- **Automation**: Managed by two AirFlow schedulers for stream processing and data storage, typically executed near day's end.
+- **Data Visualization**: Tableau visualizes sentiment analysis results from MySQL database.
+- **End Result**: Users interact with a dashboard displaying sentiment trends across Reddit topics.
 
 ![My Project Diagram](./image/tb_dashboard.png "Tableau dashboard")
 
