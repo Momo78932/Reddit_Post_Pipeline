@@ -6,7 +6,11 @@
 ### Objective
 To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
    
-![My Project Diagram](./image/tb_dashboard.png "Tableau dashboard")
+
+The Reddit Post Pipeline project is adeptly designed to harvest data from the Reddit API using the `praw` Python library. Tailored to user interests, the pipeline intelligently sources content specified in the `subredditTopics.txt` file. It ensures originality by cross-referencing unique Reddit post IDs with a Redis database. Posts not previously recorded are then compiled into documents—each containing a user-defined number of posts complete with titles and bodies—and are subsequently stored for each subreddit topic. This data is then transferred to a MySQL database for comprehensive sentiment analysis. To optimize processing, data storage is automated through dual AirFlow schedulers, activated near the end of each day. The processed data is finally visualized using Tableau, which connects to the MySQL database to display sentiment analysis results.
+
+   
+
 
 ## Table of Contents
 
@@ -32,10 +36,12 @@ To build a data pipeline that gathers and analyzes Reddit post data based on use
 - **Automation**: Managed by two AirFlow schedulers for stream processing and data storage, typically executed near day's end.
 - **Data Visualization**: Tableau visualizes sentiment analysis results from MySQL database.
 - **End Result**: Users interact with a dashboard displaying sentiment trends across Reddit topics.
+   
 
+    
+![My Project Diagram](./image/tb_dashboard.png "Tableau dashboard")
 
 ## Installation and Setup
-
 
 ### System Requirements
 
