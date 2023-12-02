@@ -2,11 +2,9 @@
 
 ## Reddit Post Sentiment Analysis Data Pipeline
 
-### Project Overview
-
-The Reddit Sentiment Analysis Data Pipeline is designed to collect comments from Reddit using the Reddit API, process them using Apache Spark, store the processed data in Cassandra, and visualize sentiment scores of various subreddits in Grafana. The pipeline leverages containerization and utilizes a Kubernetes cluster for deployment, with infrastructure management handled by Terraform. Finally, Kafka is used as a message broker to provide low latency, scalability & availability.
-
-NOTE: This project was (fortunately?) created right before the Reddit API terms and policies changed drastically making it a paid service as of now. So, just a heads up, I haven't tested the pipeline with a paid account yet and it may not work as expected. Feel free to make a PR if you happen to find any required changes.
+## Objective
+To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
+![My Project Diagram](./image/flowchart.png "Project flowchart")
 
 
 ## Table of Contents
@@ -19,9 +17,9 @@ NOTE: This project was (fortunately?) created right before the Reddit API terms 
 - [Acknowledgements](#acknowledgements)
 
 ## Project Overview
-![My Project Diagram](./image/flowchart.png "Project flowchart")
 ### Objective
 To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
+![My Project Diagram](./image/flowchart.png "Project flowchart")
 
 ### Process Flow
 
@@ -33,6 +31,7 @@ To build a data pipeline that gathers and analyzes Reddit post data based on use
 - **Automation**: Managed by two AirFlow schedulers for stream processing and data storage, typically executed near day's end.
 - **Data Visualization**: Tableau visualizes sentiment analysis results from MySQL database.
 - **End Result**: Users interact with a dashboard displaying sentiment trends across Reddit topics.
+
 
 ![My Project Diagram](./image/tb_dashboard.png "Tableau dashboard")
 
