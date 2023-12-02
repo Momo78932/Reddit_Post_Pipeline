@@ -12,6 +12,7 @@
 - [2023-11-22](#2023-11-22)
 - [2023-11-26](#2023-11-26)
 - [2023-11-29](#2023-11-29)
+- [2023-12-01](#2023-11-01)
 
 ## 2023-11-01
 
@@ -125,4 +126,18 @@
 #### Notes
 - The changes made today were focused on enhancing the robustness of the data collection pipeline from Reddit and improving the manageability of the configurations. The renaming and reorganization of scripts reflect an ongoing effort to maintain a clean and logical structure in the codebase.
 
+## 2023-12-01
 
+#### Added
+- Added `mysql_helper.py` in the `utils` directory to provide MySQL database interaction functions.
+
+#### Changed
+- Updated `backfill_sql_db.py` in the `scripts/SQL` directory with new optimizations.
+- Enhanced `post_sentiment_processing.py` in the `scripts` directory for better accuracy in sentiment analysis.
+- Refactored `mongodb_helper.py` in the `utils` directory to improve the interface and usability.
+
+#### Fixed
+- There are no fixes reported for today.
+
+#### Notes
+- The updates applied today aim to refine data processing capabilities and expand database support. The addition of `mysql_helper.py` marks a significant step in diversifying our database interaction layer. Modifications to existing scripts have also been implemented to streamline the data flow and increase the overall efficiency of the system.
