@@ -42,37 +42,7 @@ def run_update_sql():
         
 
 
-def check_sql_connection():
-    '''
-    check_sql_connection: for airflow to check mysql connection
-    '''
-    try:
-        # Establish a database connection
-        connection = mysql.connector.connect(
-            host=Configs['mysql_cred']['host'],       
-            database='reddit_thread_analysis',
-            user=Configs['mysql_cred']['user'],     
-            password=Configs['mysql_cred']['password'] 
-        )
 
-        # Check if the connection was successful
-        if connection.is_connected():
-            db_info = connection.get_server_info()
-            print("Connected to MySQL Server version ", db_info)
-            cursor = connection.cursor()
-
-            # Execute a query
-            cursor.execute("select database();")
-            record = cursor.fetchone()
-            print("You're connected to database: ", record)
-
-        # Always close the connection and cursor
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed")
-
-    except Error as e:
-        print("Error while connecting to MySQL", e)
 
 
 

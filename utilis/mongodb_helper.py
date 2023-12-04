@@ -1,17 +1,21 @@
 import configparser
 from pymongo import MongoClient
-import os
 from datetime import datetime
-import time
+import os
 
-path_to_settings = "/Users/liuminghuang/Repos/Reddit_Post_Pipeline/secrets.ini"
+current_path = os.getcwd()
+repos_substring = '/Reddit_Post_Pipeline'
+repos_index = current_path.find(repos_substring)
+project_folder_path = current_path[:repos_index + len(repos_substring)]
+path_to_settings = project_folder_path + "/secrets.ini"
+
 # read configuration from settings
 Configs = configparser.ConfigParser()
 Configs.read(path_to_settings)
 
 mongodb_cred = {'mongo_user_id' : Configs['mongodb_cred']['user_id'],
                 'mongo_password' :  Configs['mongodb_cred']['password'],
-                'mongo_cluster_name': 'momo78932'
+                'mongo_cluster_name': Configs['mongodb_cred']['cluster_name']
                 }
 
 
@@ -85,7 +89,9 @@ def get_mongodb_data(subredditlist, db_name, collection_name, date):
     '''
     doc_list = []
     for subredditName in subredditlist:
-        doc_list.append(get_mongodb_data_single(subredditName, db_name, collection_name, date))  
+        single_dict = get_mongodb_data_single(subredditName, db_name, collection_name, date)
+        if single_dict != {}:
+            doc_list.append(single_dict)  
     return doc_list
 
 
@@ -97,14 +103,20 @@ def get_mongodb_data_single(subredditName, db_name, collection_name, date):
     client = mongodb_connection(mongodb_cred, db_name, collection_name)
     prompt = {'subthread':subredditName,'Date':date}
     l_doc = client.get_documents(prompt)
-    final_doc = l_doc[0]
-    l_submissions = list(map(lambda d: d['submissions'], l_doc))
 
-    final_submission = []
-    for entry in l_submissions:
-        final_submission.extend(entry)
-    final_doc['submissions'] = final_submission
-    return final_doc
+    if l_doc != []:
+        final_doc = l_doc[0]
+        l_submissions = list(map(lambda d: d['submissions'], l_doc))
+
+        final_submission = []
+        for entry in l_submissions:
+            final_submission.extend(entry)
+        final_doc['submissions'] = final_submission
+        return final_doc
+    else:
+        return {}
+
+    
 
 
 def check_mongodb_connection():
