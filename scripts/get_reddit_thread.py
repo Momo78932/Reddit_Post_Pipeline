@@ -2,14 +2,22 @@ import praw
 from prawcore import NotFound
 import configparser
 import sys
-sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
+import os
+# Get the current working directory
+current_path = os.getcwd()
+repos_substring = '/Reddit_Post_Pipeline'
+repos_index = current_path.find(repos_substring)
+project_folder_path = current_path[:repos_index + len(repos_substring)]
+
+
+sys.path.append(project_folder_path)
 from utilis.redis_helper import redis_connection
 from utilis.mongodb_helper import mongodb_connection, mongodb_cred
 from utilis.reddit_helper import *
 from utilis.settings import *
 from datetime import datetime
 
-path_to_settings = "/Users/liuminghuang/Repos/Reddit_Post_Pipeline/secrets.ini"
+path_to_settings = project_folder_path +"/secrets.ini"
 
 # read configuration from settings
 Configs = configparser.ConfigParser()

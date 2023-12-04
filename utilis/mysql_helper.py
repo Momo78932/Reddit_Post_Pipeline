@@ -1,8 +1,14 @@
+import sys
+import os
+current_path = os.getcwd()
+repos_substring = '/Reddit_Post_Pipeline'
+repos_index = current_path.find(repos_substring)
+project_folder_path = current_path[:repos_index + len(repos_substring)]
+sys.path.append(project_folder_path)
 import mysql.connector
 from mysql.connector import Error
 from scripts.SQL.interact_with_sql_db_query import *
 from textblob import TextBlob
-
 from datetime import date
 from datetime import datetime, timedelta
 
@@ -74,3 +80,35 @@ def update_sql_db_single_subreddit(mysql_connection, mysql_database, mgdb_data):
                 subjectivity = round(blob.sentiment[1],3)
                 insert_post_PostSentiment(mysql_connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, polarity, subjectivity)
                 order += 1
+
+def check_sql_connection():
+    '''
+    check_sql_connection: for airflow to check mysql connection
+    '''
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(
+            host=Configs['mysql_cred']['host'],       
+            database='reddit_thread_analysis',
+            user=Configs['mysql_cred']['user'],     
+            password=Configs['mysql_cred']['password'] 
+        )
+
+        # Check if the connection was successful
+        if connection.is_connected():
+            db_info = connection.get_server_info()
+            print("Connected to MySQL Server version ", db_info)
+            cursor = connection.cursor()
+
+            # Execute a query
+            cursor.execute("select database();")
+            record = cursor.fetchone()
+            print("You're connected to database: ", record)
+
+        # Always close the connection and cursor
+        cursor.close()
+        connection.close()
+        print("MySQL connection is closed")
+
+    except Error as e:
+        print("Error while connecting to MySQL", e)

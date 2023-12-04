@@ -4,10 +4,17 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 
 import sys
-sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
-from scripts.get_reddit_thread import run_get_thread
-from utilis.redis_helper import check_redis_connection
-from utilis.mongodb_helper import check_mongodb_connection
+import os
+# Get the current working directory
+current_path = os.getcwd()
+repos_substring = '/Reddit_Post_Pipeline'
+repos_index = current_path.find(repos_substring)
+project_folder_path = current_path[:repos_index + len(repos_substring)]
+
+sys.path.append(project_folder_path)
+from scripts.get_reddit_thread import *
+from utilis.redis_helper import *
+from utilis.mongodb_helper import *
 import datetime 
 
 with DAG(
