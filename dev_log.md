@@ -13,6 +13,7 @@
 - [2023-11-26](#2023-11-26)
 - [2023-11-29](#2023-11-29)
 - [2023-12-01](#2023-12-01)
+- [2023-12-03](#2023-12-03)
 
 ## 2023-11-01
 
@@ -141,4 +142,30 @@
 
 #### Notes
 - Today's updates focus on refining the data processing functions and extending the database interaction capabilities. The newly added `mysql_helper.py` enriches our suite of database tools, while changes to the sentiment analysis script align it with the latest feature set, enhancing its ability to process topic-specific data efficiently. These ongoing improvements underscore our commitment to building a robust and versatile analytics platform.
+
+
+## 2023-12-03
+
+#### Codebase Refinement
+- Replaced hardcoded folder path in:
+  - `get_reddit_thread.py`
+  - `settings.py`
+  - `mongodb_helper.py`
+  - `load_reddit_thread.py`
+  - `update_mysql_db.py`
+
+#### Data Pipeline Updates
+- Added DAG to update SQL database daily (`update_mysql_db.py`).
+
+#### Identified Issues
+- **Bug Fixed:**  
+	- List out of range when running `backfill_sql_db.py`.
+- **Bug Found:**
+  - Import error with the two DAG files (`load_reddit_thread.py` and `update_mysql_db.py`).
+
+#### Notes
+- The focus was on identifying existing issues to set the stage for the next phase of bug fixes.
+- Implemented a new DAG for automated daily updates to the SQL database, enhancing operational efficiency.
+- Detected and logged new bugs, including an import error that affects DAG operations.
+- Planned fixes and improvements will be addressed in the upcoming development cycle to ensure continuous integration and delivery.
 
