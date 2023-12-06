@@ -9,6 +9,7 @@ CREATE TABLE PostSentiment (
     FOREIGN KEY (subreddit_id) REFERENCES RedditTopic(id),
     date_generated DATE,
     date_inserted TIMESTAMP,
+    title VARCHAR(1000), 
     subjectivity FLOAT CHECK (subjectivity >= -1 AND subjectivity <= 1),
     polarity FLOAT CHECK (polarity >= -1 AND polarity <= 1)
 );

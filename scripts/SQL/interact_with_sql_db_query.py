@@ -25,8 +25,9 @@ WHERE subreddit_name = '{}'
 
 ## insert post data into PostSentiment
 insert_post_data = """
-INSERT INTO {}.PostSentiment (post_id, subreddit_id, date_generated, date_inserted, subjectivity, polarity) VALUES ('{}', '{}','{}', '{}', '{}', '{}')
+INSERT INTO {}.PostSentiment (post_id, subreddit_id, date_generated, date_inserted, title, subjectivity, polarity) VALUES ('{}', '{}','{}','{}', '{}', '{}', '{}')
 """
+
 # get post id from PostSentiment
 get_post_id = """
 SELECT post_id

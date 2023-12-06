@@ -1,6 +1,12 @@
 import configparser
 import sys
-sys.path.append('/Users/liuminghuang/Repos/Reddit_Post_Pipeline')
+import os
+current_path = os.getcwd()
+repos_substring = '/Reddit_Post_Pipeline'
+repos_index = current_path.find(repos_substring)
+project_folder_path = current_path[:repos_index + len(repos_substring)]
+sys.path.append(project_folder_path)
+
 from utilis.mongodb_helper import *
 from utilis.settings import *
 from utilis.mysql_helper import *
@@ -9,7 +15,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
-path_to_settings = "/Users/liuminghuang/Repos/Reddit_Post_Pipeline/secrets.ini"
+path_to_settings = project_folder_path+ "/secrets.ini"
 
 # read configuration from settings
 Configs = configparser.ConfigParser()

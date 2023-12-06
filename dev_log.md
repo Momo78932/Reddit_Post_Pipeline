@@ -169,3 +169,32 @@
 - Detected and logged new bugs, including an import error that affects DAG operations.
 - Planned fixes and improvements will be addressed in the upcoming development cycle to ensure continuous integration and delivery.
 
+
+
+## 2023-12-05
+
+#### Codebase Updates
+- Modified `create_table.sql` to add a "Title" column to the `PostSentiment` table in MySQL, enhancing data structure.
+- Updated `interact_with_sql_db_query.py` and `mysql_helper.py` to accommodate the new column in data retrieval operations.
+- Improved `post_sentiment_processing.py` for better accuracy in sentiment analysis and handling of special characters in INSERT statements.
+
+
+#### Bugs and Fixes
+- **Problem Found:**
+  - Issue with the handling of special characters or string literals in INSERT statement.
+- **Solution Implemented:**
+  - Escaped single quotes within the title string to ensure proper SQL syntax.
+  - Code Implementation: `escaped_title = title.replace("'", "''")`
+
+#### Data Pipeline Enhancements
+-  Add "Title" column to PostSentiment table in MySQL.
+  - Problem: Handling of special characters or string literals in INSERT statement was causing errors.
+  - Solution: Escaped single quotes in the title string to ensure proper SQL syntax. (`escaped_title = title.replace("'", "''")`)
+
+#### Planned Improvements
+- Export to CSV file and perform data analysis for in-depth insights.
+
+#### Notes
+- Today’s updates focused on refining data structures and improving data processing scripts.
+- Addressed critical bugs affecting the data pipeline's reliability and efficiency.
+- Preparing to conduct comprehensive data analysis with the newly updated and structured data.

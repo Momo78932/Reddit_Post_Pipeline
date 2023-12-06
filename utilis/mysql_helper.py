@@ -7,10 +7,17 @@ project_folder_path = current_path[:repos_index + len(repos_substring)]
 sys.path.append(project_folder_path)
 import mysql.connector
 from mysql.connector import Error
+import configparser
 from scripts.SQL.interact_with_sql_db_query import *
 from textblob import TextBlob
 from datetime import date
 from datetime import datetime, timedelta
+
+
+# read configuration from settings
+path_to_settings = project_folder_path +"/secrets.ini"
+Configs = configparser.ConfigParser()
+Configs.read(path_to_settings)
 
 def update_RedditTopic_table(connection, mysql_database, mgdb_data_subthread):
     '''
@@ -42,12 +49,12 @@ def get_reddit_post_id(connection, mysql_database, post_id):
     isin_id = mycursor.fetchall()
     return isin_id
 
-def insert_post_PostSentiment(connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, polarity, subjectivity):
+def insert_post_PostSentiment(connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, title, subjectivity, polarity):
     '''
     insert post data into PostSentiment
     '''
     mycursor = connection.cursor()
-    insert_post_data_query = insert_post_data.format(mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, polarity, subjectivity)
+    insert_post_data_query = insert_post_data.format(mysql_database, post_id, subreddit_id, DateGenerated, DateInserted,title, subjectivity, polarity)
     mycursor.execute(insert_post_data_query)
     connection.commit()
 
@@ -75,11 +82,13 @@ def update_sql_db_single_subreddit(mysql_connection, mysql_database, mgdb_data):
             if isin_id == []:
                 DateInserted = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 title = mgdb_data['submissions'][order-1]['title']
+                escaped_title = title.replace("'", "''")
                 blob = TextBlob(title)
                 polarity = round(blob.sentiment[0],3)
                 subjectivity = round(blob.sentiment[1],3)
-                insert_post_PostSentiment(mysql_connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, polarity, subjectivity)
+                insert_post_PostSentiment(mysql_connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, escaped_title,  subjectivity, polarity)
                 order += 1
+
 
 def check_sql_connection():
     '''
