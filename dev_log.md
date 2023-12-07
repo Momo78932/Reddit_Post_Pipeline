@@ -226,8 +226,6 @@
   - `scripts/news/_init_.py`
   - `scripts/news/backfill_news.py`
   - `utils/news_helper.py`
-
-#### Changes to be Committed
 - Modified `scripts/SQL/backfill_sql_db.py` for database improvements.
 - Updated `scripts/get_reddit_thread.py` to fetch and process thread data more efficiently.
 - Enhanced `post_sentiment_processing.py` for improved sentiment analysis.
