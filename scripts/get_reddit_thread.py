@@ -11,10 +11,11 @@ project_folder_path = current_path[:repos_index + len(repos_substring)]
 
 
 sys.path.append(project_folder_path)
-from utilis.redis_helper import redis_connection
-from utilis.mongodb_helper import mongodb_connection, mongodb_cred
+from utilis.redis_helper import *
+from utilis.mongodb_helper import *
 from utilis.reddit_helper import *
 from utilis.settings import *
+from utilis.news_helper import *
 from datetime import datetime
 
 path_to_settings = project_folder_path +"/secrets.ini"
@@ -38,7 +39,7 @@ def get_thread(rdt_subredditTopic, rdt_info, rds_info, mgdb_info):
         user_agent=rdt_info['userAgentName']
         )
         r = redis_connection(rds_info['rds_port'], rds_info['rds_dbNum'], rds_info['rds_host'])
-        mgdb_client = mongodb_connection(mongodb_cred, mgdb_info['mgdb_db_name'], mgdb_info['mgdb_collection_name'])
+        mgdb_client = mongodb_connection(mongodb_cred, mgdb_info['mgdb_db_name'], mgdb_info['mgdb_collection_name_posts'])
         distinct_post_id = r.get_elements(rds_info['rds_key'])
         submission_document = {'subthread': rdt_subredditTopic, 'Date': datetime.now().strftime('%Y-%m-%d')}
         submission_id_to_add = set()
@@ -58,12 +59,22 @@ def get_thread(rdt_subredditTopic, rdt_info, rds_info, mgdb_info):
         raise(f"Error accesing Reddit Thread {rdt_subredditTopic}: {e}")
     
 
+def run_get_news():
+    """
+    get news for user defined interest
+    """
+    mgdb_client = mongodb_connection(mongodb_cred, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name_news'])
+
+    get_news(mgdb_client, default_date)
+    
+
+
 
 def run_get_thread():
     '''
     run_get_thread: for airflow to run get_thread function
     '''
-    for st in subreddit_list:
+    for st in topic_list:
         get_thread(st,reddit_info, redis_info, mongodb_info)
 
 

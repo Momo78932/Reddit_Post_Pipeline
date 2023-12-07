@@ -15,6 +15,7 @@
 - [2023-12-01](#2023-12-01)
 - [2023-12-03](#2023-12-03)
 - [2023-12-05](#2023-12-05)
+- [2023-12-06](#2023-12-06)
 
 ## 2023-11-01
 
@@ -199,3 +200,43 @@
 - Today’s updates focused on refining data structures and improving data processing scripts.
 - Addressed critical bugs affecting the data pipeline's reliability and efficiency.
 - Preparing to conduct comprehensive data analysis with the newly updated and structured data.
+
+
+## 2023-12-06
+
+#### Data Analysis
+- Converted sentiment polarity classifications into "neutral", "positive", and "negative".
+- Visualized "title" data using a word cloud.
+- Trained various ML models to evaluate sentiment analysis performance:
+  - Multinomial Naïve Bayes
+  - Logistic Regression
+  - Random Forest
+  - Support Vector Machines
+- Analyzed the accuracy of each algorithm:
+  - Multinomial Naive Bayes: 0.595420
+  - Logistic Regression: 0.572519
+  - Random Forest: 0.572519
+  - Support Vector Machines: 0.564885
+- Noted that news polarity might affect the result and planned to add a column for the day's average news polarity.
+
+#### Codebase Refinement
+- Implemented a new column for day's polarity in the data structure.
+- Updated MongoDB scripts to include daily news updates and backfill operations.
+- Created new files for news data processing:
+  - `scripts/news/_init_.py`
+  - `scripts/news/backfill_news.py`
+  - `utils/news_helper.py`
+
+#### Changes to be Committed
+- Modified `scripts/SQL/backfill_sql_db.py` for database improvements.
+- Updated `scripts/get_reddit_thread.py` to fetch and process thread data more efficiently.
+- Enhanced `post_sentiment_processing.py` for improved sentiment analysis.
+
+#### To-do for Future
+- [ ] Integrate the day's news polarity into MySQL database.
+- [ ] Perform backfill operations for comprehensive data analysis.
+
+#### Notes
+- Focused on enhancing the accuracy of sentiment analysis by incorporating additional data and refining ML models.
+- Prepared for future integration of news polarity into the data pipeline to enrich analysis.
+- Scheduled backfill tasks to ensure completeness and integrity of historical data.

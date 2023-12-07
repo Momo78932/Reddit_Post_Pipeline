@@ -11,11 +11,13 @@ from datetime import datetime, timedelta
 from utilis.reddit_helper import *
 
 
-
 default_date = datetime.today().strftime('%Y-%m-%d')
+subreddit_file_path = project_folder_path + '/utilis/subredditTopics.txt'
+topic_list = get_subreddit_topics(subreddit_file_path)
+
+
+
 mysql_database = "testing"
-file_path = project_folder_path + '/utilis/subredditTopics.txt'
-subreddit_list = get_subreddit_topics(file_path)
 reddit_info = {
     'userAgentName': 'airflow',
     'numSubreddit': 40,
@@ -28,5 +30,7 @@ redis_info = {
 }
 mongodb_info = {
     'mgdb_db_name': 'chatgpt_reddit_thread',
-    'mgdb_collection_name': 'top_posts'
+    'mgdb_collection_name_posts': 'top_posts',
+    'mgdb_collection_name_news': 'news'
 }
+
