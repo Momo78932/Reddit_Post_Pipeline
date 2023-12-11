@@ -10,6 +10,7 @@ sys.path.append(project_folder_path)
 from utilis.redis_helper import *
 from utilis.settings import *
 from datetime import datetime
+from scripts.get_reddit_thread import *
 
 # Set the start date and end date
 start_date_str = '2023-11-09'
@@ -27,3 +28,7 @@ Configs.read(path_to_settings)
 
 client_id=Configs['reddit_cred']['client_id']
 client_secret=Configs['reddit_cred']['client_secret']
+
+for d in date_list:
+    get_news(d)
+

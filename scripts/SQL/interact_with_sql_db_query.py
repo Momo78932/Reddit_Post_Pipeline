@@ -28,10 +28,22 @@ insert_post_data = """
 INSERT INTO {}.PostSentiment (post_id, subreddit_id, date_generated, date_inserted, title, subjectivity, polarity) VALUES ('{}', '{}','{}','{}', '{}', '{}', '{}')
 """
 
+## insert news data into NewsSentiment
+insert_news_data = """
+INSERT INTO {}.NewsSentiment (news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity) VALUES ('{}', '{}','{}','{}', '{}', '{}', '{}','{}','{}')
+"""
+
 # get post id from PostSentiment
 get_post_id = """
 SELECT post_id
 FROM {}.PostSentiment
+WHERE post_id = '{}';
+"""
+
+# get news id from NewsSentiment
+get_news_id = """
+SELECT post_id
+FROM {}.NewsSentiment
 WHERE post_id = '{}';
 """
 

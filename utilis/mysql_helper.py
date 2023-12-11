@@ -49,6 +49,16 @@ def get_reddit_post_id(connection, mysql_database, post_id):
     isin_id = mycursor.fetchall()
     return isin_id
 
+def get_news_id(connection, mysql_database, news_id):
+    '''
+    get news id from NewsSentiment
+    '''
+    mycursor = connection.cursor()
+    get_news_id_query = get_news_id.format(mysql_database, news_id)
+    mycursor.execute(get_news_id_query)
+    isin_id = mycursor.fetchall()
+    return isin_id
+
 def insert_post_PostSentiment(connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, title, subjectivity, polarity):
     '''
     insert post data into PostSentiment
@@ -58,11 +68,22 @@ def insert_post_PostSentiment(connection, mysql_database, post_id, subreddit_id,
     mycursor.execute(insert_post_data_query)
     connection.commit()
 
-def update_sql_db_single_subreddit(mysql_connection, mysql_database, mgdb_data):
+def insert_news_NewsSentiment(connection, mysql_database, news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity):
     '''
-    update_sql_db:
+    insert news data into NewsSentiment
+    '''
+    mycursor = connection.cursor()
+    
+    values = (mysql_database, news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity)
+    mycursor.execute(insert_news_data, values)
+    connection.commit()
+    
+
+def update_sql_db_single_subreddit_posts(mysql_connection, mysql_database, mgdb_data):
+    '''
+    update_sql_db_single_subreddit_posts:
      Effect: update redditTopic and Postsentiment table in MySQL
-    update_sql_db: Str Str -> None
+    update_sql_db_single_subreddit_posts: sql.connection Str Str -> None
     
     '''
     # update RedditTopic table
@@ -89,6 +110,45 @@ def update_sql_db_single_subreddit(mysql_connection, mysql_database, mgdb_data):
                 insert_post_PostSentiment(mysql_connection, mysql_database, post_id, subreddit_id, DateGenerated, DateInserted, escaped_title,  subjectivity, polarity)
                 order += 1
 
+def update_sql_db_single_subreddit_news(mysql_connection, mysql_database, mgdb_data_news):
+    '''
+    update_sql_db_single_subreddit_news:
+     Effect: update redditTopic and Postsentiment table in MySQL
+    update_sql_db_single_subreddit_news: sql.connection Str Str -> None
+    
+    '''
+    # fetching id of corresponding subreddit_name
+    result = fetch_subreddit_id(mysql_connection, mysql_database, mgdb_data_news['topic'])
+    
+    if result != []:
+        order = 1
+        subreddit_id = result[0][0]
+        mongodb_default_id = str(mgdb_data_news['_id'])
+        DateGenerated = mgdb_data_news['date']
+        for _ in mgdb_data_news['articles']:
+            news_id = mongodb_default_id + str(order)
+            isin_id = get_reddit_post_id(mysql_connection, mysql_database, news_id)
+            if isin_id == []:
+                DateInserted = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                title = mgdb_data_news['articles'][order-1]['title']
+                escaped_title = title.replace("'", "''")
+                description = mgdb_data_news['articles'][order-1]['description']
+                escaped_description = description.replace("'", "''")
+                author = mgdb_data_news['articles'][order-1]['author']
+                if author is not None:
+                    escaped_author = author.replace("'", "''")
+                else: 
+                    escaped_author = None
+                source_name = mgdb_data_news['articles'][order-1]['source_name']
+                
+                blob = TextBlob(description)
+                polarity = round(blob.sentiment[0],3)
+
+                insert_news_NewsSentiment(mysql_connection, mysql_database, news_id, 
+                                        subreddit_id, DateGenerated, DateInserted, 
+                                        escaped_title, escaped_description, escaped_author,
+                                        source_name, polarity)
+                order += 1
 
 def check_sql_connection():
     '''

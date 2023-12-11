@@ -59,14 +59,26 @@ def get_thread(rdt_subredditTopic, rdt_info, rds_info, mgdb_info):
         raise(f"Error accesing Reddit Thread {rdt_subredditTopic}: {e}")
     
 
-def run_get_news():
+def get_news(date):
     """
     get news for user defined interest
     """
+    api_key=Configs['news_api_cred']['api_key']
     mgdb_client = mongodb_connection(mongodb_cred, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name_news'])
+    for topic in topic_list:
+        news_dict = get_news_single_topic(topic, date, api_key)
+        if news_dict['totalResults'] != 0:
+            news_dict['date'] = date
+            news_dict['topic'] = topic
+            mgdb_client.add_document(news_dict)
 
-    get_news(mgdb_client, default_date)
-    
+
+
+def run_get_news():
+    '''
+    run_get_news: for airflow to import today's news data
+    '''
+    get_news(default_date)
 
 
 

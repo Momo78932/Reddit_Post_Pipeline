@@ -82,20 +82,20 @@ class mongodb_connection:
         else:
             print('Failed. Provide valid type of document')
 
-def get_mongodb_data(subredditlist, db_name, collection_name, date):
+def get_mongodb_data_posts(subredditlist, db_name, collection_name, date):
     '''
-    get_mongodb_data(subredditlist, db_name, collection_name, date): get today's post data from Mongodb - 1 dictionary for 1 subreddit
-    get_mongodb_data: (listof Str) Str Str Str -> (listof Dict)
+    get_mongodb_data_posts(subredditlist, db_name, collection_name, date): get today's post data from Mongodb - 1 dictionary for 1 subreddit
+    get_mongodb_data_posts: (listof Str) Str Str Str -> (listof Dict)
     '''
     doc_list = []
     for subredditName in subredditlist:
-        single_dict = get_mongodb_data_single(subredditName, db_name, collection_name, date)
+        single_dict = get_mongodb_data_single_posts(subredditName, db_name, collection_name, date)
         if single_dict != {}:
             doc_list.append(single_dict)  
     return doc_list
 
 
-def get_mongodb_data_single(subredditName, db_name, collection_name, date):
+def get_mongodb_data_single_posts(subredditName, db_name, collection_name, date):
     '''
     get_mongodb_data_single: gether post data for date and subredditName in one dictionary
     get_mongodb_data_single: Str Str Str Str -> Dict
@@ -107,7 +107,6 @@ def get_mongodb_data_single(subredditName, db_name, collection_name, date):
     if l_doc != []:
         final_doc = l_doc[0]
         l_submissions = list(map(lambda d: d['submissions'], l_doc))
-
         final_submission = []
         for entry in l_submissions:
             final_submission.extend(entry)
@@ -116,7 +115,52 @@ def get_mongodb_data_single(subredditName, db_name, collection_name, date):
     else:
         return {}
 
+
+def get_mongodb_data_news(subredditlist, db_name, collection_name, date):
+    '''
+    get_mongodb_data_news(subredditlist, db_name, collection_name, date): get today's post data from Mongodb - 1 dictionary for 1 subreddit
+    get_mongodb_data_news: (listof Str) Str Str Str -> (listof Dict)
+    '''
+    doc_list = []
+    for topic in subredditlist:
+        single_dict = get_mongodb_data_single_news(topic, db_name, collection_name, date)
+        if single_dict != {}:
+            doc_list.append(single_dict)  
+    return doc_list
     
+
+def get_mongodb_data_single_news(subredditName, db_name, collection_name, date):
+    '''
+    get_mongodb_data_single_news: gether post data for date and subredditName in one dictionary
+    get_mongodb_data_single_news: Str Str Str Str -> Dict
+    '''
+    client = mongodb_connection(mongodb_cred, db_name, collection_name)
+    prompt = {'topic':subredditName ,'date':date}
+    l_doc = client.get_documents(prompt)
+
+    if l_doc != []:
+        final_doc = l_doc[0]
+        l_articles = list(map(lambda d: d['articles'], l_doc))
+
+        final_article = []
+        for entry in l_articles:
+            final_article.extend(entry)
+        # turn source into source_id and source_name
+        for item in final_article:
+            if 'source' in item:
+                item['source_id'] = item['source']['id']
+                item['source_name'] = item['source']['name']
+                del item['source'] 
+            if 'url' in item:
+                del item['url'] 
+            if 'content' in item:
+                del item['content'] 
+        final_doc['articles'] = final_article
+        return final_doc
+    else:
+        return {}
+    
+
 
 
 def check_mongodb_connection():

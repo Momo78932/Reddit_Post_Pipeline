@@ -9,6 +9,8 @@ backfill:
  - to be implemented:
   - backfill dag to backfill info for previous days inside mongodb
 
+
+
 - Postsentiment
     - post_id (mongobd default id + order, varchar, unique, primary_key)
     - subreddit_id (foreign key, int)
@@ -19,6 +21,16 @@ backfill:
     - Polarity (processed based on reddit post title, float)
         - textblob
 
+- NewsSentiment
+    - post_id (mongobd default id + order, varchar, unique, primary_key)
+    - subreddit_id (foreign key, int)
+    - date_generated: date (when this record was generated - mongobd: date)
+    - date_inserted: timestamp: (when this record was inserted into mysql)
+    - title (varchar)
+    - description (varchar)
+    - Subjectivity (float)
+    - Polarity (processed based on reddit post title, float)
+        - textblob
 
 
 - redditTopic
