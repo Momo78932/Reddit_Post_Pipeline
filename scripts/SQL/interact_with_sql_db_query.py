@@ -30,7 +30,7 @@ INSERT INTO {}.PostSentiment (post_id, subreddit_id, date_generated, date_insert
 
 ## insert news data into NewsSentiment
 insert_news_data = """
-INSERT INTO {}.NewsSentiment (news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity) VALUES ('{}', '{}','{}','{}', '{}', '{}', '{}','{}','{}')
+INSERT INTO {}.NewsSentiment (news_id, subreddit_id, date_generated, date_inserted, polarity) VALUES (%s, %s,%s,%s, %s)
 """
 
 # get post id from PostSentiment
