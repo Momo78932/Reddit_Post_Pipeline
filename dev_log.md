@@ -16,6 +16,7 @@
 - [2023-12-03](#2023-12-03)
 - [2023-12-05](#2023-12-05)
 - [2023-12-06](#2023-12-06)
+- [2023-12-10](#2023-12-10)
 
 ## 2023-11-01
 
@@ -238,3 +239,16 @@
 - Focused on enhancing the accuracy of sentiment analysis by incorporating additional data and refining ML models.
 - Prepared for future integration of news polarity into the data pipeline to enrich analysis.
 - Scheduled backfill tasks to ensure completeness and integrity of historical data.
+
+##  2023-12-10
+
+#### Codebase Refinement
+- Modified `update_sql_db` and `run_update_sql` function to load MongoDB news data to MySQL database.
+
+#### Errors Found
+- Encountered an error when running `backfill_sql_db.py`. Issue is currently under investigation.
+
+#### Notes
+- Today’s focus was on integrating MongoDB news data into the MySQL database to enrich our data set.
+- Significant updates were made to the SQL scripts and utilities to improve data processing and management.
+- An error was discovered in the `backfill_sql_db.py` script; troubleshooting is underway to resolve this as soon as possible.

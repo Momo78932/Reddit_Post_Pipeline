@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from utilis.mongodb_helper import mongodb_connection, mongodb_cred
 
 # Set the start date and end date
-start_date_str = '2023-11-09'
+start_date_str = '2023-11-11'
 end_date = datetime.now() - timedelta(days=1) 
 start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
 
@@ -30,7 +30,7 @@ for date in date_list:
         user=Configs['mysql_cred']['user'],     
         password=Configs['mysql_cred']['password'] 
     )
-    update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name'], date)
+    update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'],mongodb_info['mgdb_collection_name_posts'], mongodb_info['mgdb_collection_name_news'], date)
 
 
 

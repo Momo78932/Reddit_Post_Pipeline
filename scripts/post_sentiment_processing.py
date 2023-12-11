@@ -25,15 +25,18 @@ Configs.read(path_to_settings)
 
 
 
-def update_sql_db(connection, mysql_database, db_name, collection_name, date):
+def update_sql_db(connection, mysql_database, db_name, collection_name_posts, collection_name_news, date):
     '''
     update_sql_db: update redditTopic and Postsentiment table in MySQL
     '''
-    list_mgdb_data= get_mongodb_data(topic_list, db_name, collection_name, date)
-    if list_mgdb_data != []:
-        for mgdb_data in list_mgdb_data:
-            update_sql_db_single_subreddit(connection, mysql_database, mgdb_data)
-
+    list_mgdb_data_posts= get_mongodb_data_posts(topic_list, db_name, collection_name_posts, date)
+    if list_mgdb_data_posts != []:
+        for mgdb_data in list_mgdb_data_posts:
+            update_sql_db_single_subreddit_posts(connection, mysql_database, mgdb_data)
+    list_mgdb_data_news = get_mongodb_data_news(topic_list, db_name, collection_name_news, date)
+    if list_mgdb_data_news != 0:
+        for mgdb_data_news in list_mgdb_data_news:
+            update_sql_db_single_subreddit_news(connection, mysql_database, mgdb_data_news)
 
 
 def run_update_sql():
@@ -46,7 +49,7 @@ def run_update_sql():
             user=Configs['mysql_cred']['user'],     
             password=Configs['mysql_cred']['password'] 
         )
-    update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name'], default_date)
+    update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name_posts'], mongodb_info['mgdb_collection_name_news'], default_date)
         
 
 

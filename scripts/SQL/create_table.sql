@@ -14,4 +14,17 @@ CREATE TABLE PostSentiment (
     polarity FLOAT CHECK (polarity >= -1 AND polarity <= 1)
 );
 
+CREATE TABLE NewsSentiment (
+    news_id VARCHAR(255) PRIMARY KEY,
+    subreddit_id INT,
+    FOREIGN KEY (subreddit_id) REFERENCES RedditTopic(id),
+    date_generated DATE,
+    date_inserted TIMESTAMP,
+    title VARCHAR(1000), 
+    description VARCHAR(2000),
+    author VARCHAR(200),
+    source_name VARCHAR(200),
+    polarity FLOAT CHECK (polarity >= -1 AND polarity <= 1)
+);
+
 
