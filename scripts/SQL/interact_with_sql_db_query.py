@@ -47,4 +47,8 @@ FROM {}.NewsSentiment
 WHERE post_id = '{}';
 """
 
+# load post data output from PostSentiment
+load_post = "SELECT * FROM {}.PostSentiment"
 
+# load news data output from NewsSentiment
+load_news = "SELECT * FROM {}.NewsSentiment"
