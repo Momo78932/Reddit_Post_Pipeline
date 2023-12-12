@@ -16,7 +16,7 @@ subreddit_file_path = project_folder_path + '/utilis/subredditTopics.txt'
 topic_list = get_subreddit_topics(subreddit_file_path)
 
 
-
+output_folder_name = 'output'
 mysql_database = "testing"
 reddit_info = {
     'userAgentName': 'airflow',

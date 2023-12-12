@@ -12,6 +12,8 @@ from scripts.SQL.interact_with_sql_db_query import *
 from textblob import TextBlob
 from datetime import date
 from datetime import datetime, timedelta
+import csv
+
 
 
 # read configuration from settings
@@ -68,15 +70,53 @@ def insert_post_PostSentiment(connection, mysql_database, post_id, subreddit_id,
     mycursor.execute(insert_post_data_query)
     connection.commit()
 
-def insert_news_NewsSentiment(connection, mysql_database, news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity):
+def insert_news_NewsSentiment(connection, mysql_database, news_id, subreddit_id, date_generated, date_inserted, polarity):
     '''
     insert news data into NewsSentiment
     '''
     mycursor = connection.cursor()
     
-    values = (mysql_database, news_id, subreddit_id, date_generated, date_inserted, title, description, author, source_name, polarity)
-    mycursor.execute(insert_news_data, values)
+    insert_news_query = insert_news_data.format(mysql_database)
+    data = (news_id, subreddit_id, date_generated, date_inserted, polarity)
+    mycursor.execute(insert_news_query, data)
     connection.commit()
+
+
+def output_csv_posts(connection, mysql_database, folder_path, file_name):
+    '''
+    output_csv_posts: output csv posts data to designated path
+    '''
+    cursor = connection.cursor()
+    load_post_query = load_post.format(mysql_database)
+    cursor.execute(load_post_query)
+    rows = cursor.fetchall()
+    column_headers = [i[0] for i in cursor.description]
+    csv_filename =  os.path.join(folder_path, file_name)
+    with open(csv_filename, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(column_headers)
+        csv_writer.writerows(rows)
+    cursor.close()
+    
+
+
+def output_csv_news(connection, mysql_database, folder_path, file_name):
+    '''
+    output_csv_news: output csv news data to designated path
+    '''
+    cursor = connection.cursor()
+    load_post_query = load_news.format(mysql_database)
+    cursor.execute(load_post_query)
+    rows = cursor.fetchall()
+    column_headers = [i[0] for i in cursor.description]
+    csv_filename =os.path.join(folder_path, file_name) 
+    with open(csv_filename, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(column_headers)
+        csv_writer.writerows(rows)
+    cursor.close()
+    connection.close()
+
     
 
 def update_sql_db_single_subreddit_posts(mysql_connection, mysql_database, mgdb_data):
@@ -131,23 +171,12 @@ def update_sql_db_single_subreddit_news(mysql_connection, mysql_database, mgdb_d
             if isin_id == []:
                 DateInserted = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 title = mgdb_data_news['articles'][order-1]['title']
-                escaped_title = title.replace("'", "''")
-                description = mgdb_data_news['articles'][order-1]['description']
-                escaped_description = description.replace("'", "''")
-                author = mgdb_data_news['articles'][order-1]['author']
-                if author is not None:
-                    escaped_author = author.replace("'", "''")
-                else: 
-                    escaped_author = None
-                source_name = mgdb_data_news['articles'][order-1]['source_name']
-                
-                blob = TextBlob(description)
+
+                blob = TextBlob(title)
                 polarity = round(blob.sentiment[0],3)
 
                 insert_news_NewsSentiment(mysql_connection, mysql_database, news_id, 
-                                        subreddit_id, DateGenerated, DateInserted, 
-                                        escaped_title, escaped_description, escaped_author,
-                                        source_name, polarity)
+                                        subreddit_id, DateGenerated, DateInserted, polarity)
                 order += 1
 
 def check_sql_connection():

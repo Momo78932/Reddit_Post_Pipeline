@@ -17,6 +17,8 @@ from mysql.connector import Error
 
 
 
+
+
 path_to_settings = project_folder_path+ "/secrets.ini"
 
 # read configuration from settings
@@ -39,6 +41,7 @@ def update_sql_db(connection, mysql_database, db_name, collection_name_posts, co
             update_sql_db_single_subreddit_news(connection, mysql_database, mgdb_data_news)
 
 
+
 def run_update_sql():
     '''
     run_update_sql: for airflow to run update_sql_db function
@@ -50,7 +53,30 @@ def run_update_sql():
             password=Configs['mysql_cred']['password'] 
         )
     update_sql_db(mysql_connection, mysql_database, mongodb_info['mgdb_db_name'], mongodb_info['mgdb_collection_name_posts'], mongodb_info['mgdb_collection_name_news'], default_date)
-        
+    mysql_connection.close()
+
+
+
+
+def update_csv_file():
+    '''
+    update_csv_file: for airflow to update output_post.csv and output_news.csv
+    '''
+    mysql_connection = mysql.connector.connect(
+            host=Configs['mysql_cred']['host'],       
+            database= mysql_database,
+            user=Configs['mysql_cred']['user'],     
+            password=Configs['mysql_cred']['password'] 
+        )
+    folder_path = os.path.join(project_folder_path, output_folder_name)
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    file_name_post = 'posts_output.csv'
+    file_name_news = 'news_output.csv'
+    output_csv_posts(mysql_connection, mysql_database, folder_path, file_name_post)
+    output_csv_news(mysql_connection, mysql_database, folder_path, file_name_news)
+    mysql_connection.close()
+
 
 
 
