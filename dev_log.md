@@ -252,3 +252,30 @@
 - Today’s focus was on integrating MongoDB news data into the MySQL database to enrich our data set.
 - Significant updates were made to the SQL scripts and utilities to improve data processing and management.
 - An error was discovered in the `backfill_sql_db.py` script; troubleshooting is underway to resolve this as soon as possible.
+
+
+##   2023-12-11
+
+#### Updates and Improvements
+
+- Implemented the `update_csv_file` function to enhance data maintenance for news and post datasets, improving the reliability of subsequent analysis.
+- Added new visualizations in the "Data Visualization and Sentiment Analysis.ipynb" notebook:
+  - Word cloud for better qualitative analysis of text data.
+  - Joint Plot for visual correlation analysis between Reddit post subjectivity and polarity.
+  - Point Plot to compare news polarity with Reddit post polarity, enabling a multi-dimensional view of sentiment trends.
+
+#### Future To-dos
+
+- Address data processing pipeline (DAG):
+  - `run_get_thread()` to load today's post data.
+  - `run_get_news()` to load today's news data.
+  - `run_update_sql()` to integrate post and news data into the MySQL database.
+  - `update_csv_file()` to export the MySQL database to an output CSV file.
+- Perform data analysis on the updated dataset to ensure current data is reflected in insights.
+
+
+#### Notes
+- Today's updates focused on addressing the challenge of data dynamism and the need for insightful sentiment analysis visualizations.
+	- The `update_csv_file` function streamlines the process of keeping our datasets up-to-date, ensuring that our sentiment analysis is based on the latest information. 
+- The new visualizations in the Jupyter notebook will allow us to observe patterns and correlations within our data more effectively, facilitating a deeper understanding of sentiment trends across different platforms.
+- Set the stage for integrating these updates into our regular data analysis pipeline, ensuring ongoing quality and relevance of insights.
