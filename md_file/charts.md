@@ -1,6 +1,5 @@
 # Up-to-Date Data Visualization Charts
-
-
+Charts was last updated December 13, 2023
 
 ## Joint Plot - Subjectivity vs Polarity
 ![image 1](./image/Subjectivity_vs_Polarity_joint_plot.png "Subjectivity vs Polarity")

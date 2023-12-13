@@ -38,3 +38,20 @@ def run_create_charts():
 
     image_filename_5 = "sentiment_class_pie_chart.png"
     sentiment_pie_chart(gpt_sentiment, color_palette, image_folder_path, image_filename_5)
+
+
+def update_chart_md():
+    '''
+    for airflow to run update chart.md last updated date
+    '''
+    
+    # Read the existing markdown content from a file (replace 'path_to_file.md' with your actual file path)
+    with open('md_file/charts.md', 'r') as file:
+        md_content = file.read()
+
+    # Update the markdown content
+    updated_date = update_last_updated_date(md_content)
+
+    # Write the updated markdown content back to the file
+    with open('md_file/charts.md', 'w') as file:
+        file.write(updated_date)

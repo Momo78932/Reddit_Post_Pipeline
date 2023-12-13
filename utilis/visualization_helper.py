@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 from PIL import Image
 import plotly.express as px
+import re
+from datetime import datetime
 
 import sys
 import os
@@ -13,6 +15,19 @@ repos_substring = '/Reddit_Post_Pipeline'
 repos_index = current_path.find(repos_substring)
 project_folder_path = current_path[:repos_index + len(repos_substring)]
 sys.path.append(project_folder_path)
+
+
+def update_last_updated_date(content):
+    '''
+    update whats after "Charts was last updated"
+    '''
+    current_date = datetime.now().strftime('%B %d, %Y')
+    pattern = re.compile(r'Charts was last updated .*\n')
+    updated_content = pattern.sub(f'Charts was last updated {current_date}\n', content)
+
+    return updated_content
+
+
 
 
 def gpt_sentiment_table(news_output_csv_path, post_output_csv_path):
