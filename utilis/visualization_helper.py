@@ -17,7 +17,7 @@ sys.path.append(project_folder_path)
 
 def gpt_sentiment_table(news_output_csv_path, post_output_csv_path):
     '''
-    gpt_sentiment_table: return gpt_sentiment table 
+    gpt_sentiment_table: return gpt_sentiment tabl
     gpt_sentiment_table: Str Str -> pd.DataFrame
     '''
     df_post = pd.read_csv(post_output_csv_path)
@@ -45,16 +45,12 @@ def gpt_sentiment_table(news_output_csv_path, post_output_csv_path):
     gpt_sentiment = gpt_sentiment[['post_id', 'date_generated', 'title', 'title_length', 'subjectivity_post', 'avg_polarity_news', 'polarity_post', 'post_sentiment_class' ]]
     return gpt_sentiment
 
-# news_output_csv_path = project_folder_path + '/output/posts_output.csv'
-# post_output_csv_path = project_folder_path + '/output/news_output.csv'
-
-# gpt_sentiment = gpt_sentiment_table(post_output_csv_path, news_output_csv_path)
 
 
 # draw Joint Plot - Subjectivity vs Polarity
 def subjectivity_polarity_joint_plot(table, image_folder_path, image_filename):
     '''
-    create joint plot to investigate the relation between post subjectivity and post polarity
+    create joint plot to investigate the relation between post subjectivity and post polarity and save image to image_folder_path
     '''
     sns.set_theme(style="whitegrid")
     joint_plot = sns.jointplot(data=table, 
@@ -81,14 +77,13 @@ def subjectivity_polarity_joint_plot(table, image_folder_path, image_filename):
     plt.savefig(full_path, dpi=300)
     plt.close(joint_plot.fig)
 
-# image_folder_path = os.path.join(project_folder_path, 'image')
-# image_filename_1 = "Subjectivity_vs_Polarity_joint_plot.png"
-
-# subjectivity_polarity_joint_plot(gpt_sentiment, image_folder_path, image_filename_1)
 
 
 
 def news_post_polarity_point_plot(table, image_folder_path, image_filename):
+    '''
+    create point plot to correlate news polarity with post polarity and save image to image_folder_path
+    '''
     # Create DataFrames from the two tables
     posts_polarity =  pd.DataFrame({'date':table['date_generated'], 'polarity': table['polarity_post'], 'type': 'Posts'})
     news_polarity =  pd.DataFrame({'date':table['date_generated'], 'polarity': table['avg_polarity_news'], 'type': 'News'})
@@ -113,47 +108,43 @@ def news_post_polarity_point_plot(table, image_folder_path, image_filename):
     plt.tight_layout()  # Adjust layout to fit the date labels
 
     full_path = os.path.join(image_folder_path, image_filename)
+    
     # Save the figure
     point_plot.figure.savefig(full_path, dpi=300)
-
-    # Close the figure to free up memory
     plt.close(point_plot.figure)
 
 
-# image_filename_2 = "news_polarity_vs_post_polarity_point_plot.png"
-# news_post_polarity_point_plot(gpt_sentiment, image_folder_path, image_filename_2)
 
 
 # --------------------Plotting the distribution of title lengths--------------------
 
 def distribution_title_length(table, image_folder_path, image_filename):
-
+    '''
+    create a box plot to visualize the distribution of title length and save image to image_folder_path
+    '''
     # Set the aesthetic style of the plots
     sns.set_style('whitegrid')
 
     # Create the box plot
     box_plot = sns.boxplot(y='title_length', data=table)
 
-    # Add title and labels (optional)
+    # Add title and labels
     plt.title('Box plot of Title Lengths in GPT Sentiment')
     plt.ylabel('Length of Title')
 
     full_path = os.path.join(image_folder_path, image_filename)
+    
     # Save the figure
     box_plot.figure.savefig(full_path, dpi=300)
-
-    # Close the figure to free up memory
     plt.close(box_plot.figure)
 
-# image_filename_3 = "title_length_boxplot.png"
-# distribution_title_length(gpt_sentiment, image_folder_path, image_filename_3)
 
 
 # --------------------Plotting the distribution of sentiment class--------------------
 
 def distribution_sentiment_class_countplot(table, color_pal, image_folder_path, image_filename):
     '''
-    investigate distribution of each post sentiment class
+    create count plot to investigate distribution of each post sentiment class and save image to image_folder_path
     '''
     # Set the aesthetic style of the plots
     sns.set_style('whitegrid')
@@ -167,7 +158,7 @@ def distribution_sentiment_class_countplot(table, color_pal, image_folder_path, 
     count_plot = sns.countplot(x='post_sentiment_class', hue='hue', data=table_with_hue, 
                                palette=color_pal, dodge=False)
 
-    # Add title and labels (optional)
+    # Add title and labels 
     plt.title('Distribution of Post Sentiment Classes')
     plt.xlabel('Sentiment Class')
     plt.ylabel('Count')
@@ -184,27 +175,21 @@ color_palette = {
         "very positive": "#326e2f"  
     }
 
-# image_filename_4 = "sentiment_class_countplot.png"
-# distribution_sentiment_class_countplot(gpt_sentiment, color_palette, image_folder_path, image_filename_4)
-
 
 # --------------------Plotting the Pie chart of the percentage of each sentiment class--------------------
 
 
 def sentiment_pie_chart(table, color_pal, image_folder_path, image_filename):
-
+    '''
+    create a pie chart to depict the percentage of each sentiment class and save image to image_folder_path
+    '''
     fig = px.pie(table, names='post_sentiment_class', title='Pie chart of each sentiment class',
                  color='post_sentiment_class', color_discrete_map=color_pal)
     
 
     full_path = os.path.join(image_folder_path, image_filename)
     
-    fig.write_image(full_path, scale=2)  # For Plotly, use write_image instead of savefig
-
-
-
-# image_filename_5 = "sentiment_class_pie_chart.png"
-# sentiment_pie_chart(gpt_sentiment, color_palette, image_folder_path, image_filename_5)
+    fig.write_image(full_path, scale=2)  
 
 
 
