@@ -1,5 +1,9 @@
 # Reddit Post Sentiment Analysis Data Pipeline
 
+<div align="center">
+  <img alt="computer" src="https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif"><br>
+</div>
+
 ## Project Overview
 ### Objective
 To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
@@ -18,6 +22,7 @@ To build a data pipeline that gathers and analyzes Reddit post data based on use
 
 ## Architecture
 ![My Project Diagram](./image/flowchart.png "Project flowchart")
+
 
 ### Process Flow
 
