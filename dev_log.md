@@ -279,3 +279,46 @@
 	- The `update_csv_file` function streamlines the process of keeping our datasets up-to-date, ensuring that our sentiment analysis is based on the latest information. 
 - The new visualizations in the Jupyter notebook will allow us to observe patterns and correlations within our data more effectively, facilitating a deeper understanding of sentiment trends across different platforms.
 - Set the stage for integrating these updates into our regular data analysis pipeline, ensuring ongoing quality and relevance of insights.
+
+
+
+## Development Log: [Today's Date]
+
+#### Pipeline Refinement
+
+- Implemented `run_create_charts()` function for improved data visualization capabilities in our analysis pipeline.
+
+#### New Chart Visualizations
+
+- Joint Plot: For analyzing the relationship between post subjectivity and polarity.
+- Point Plot: To correlate news polarity with post polarity.
+- Box Plot: To visualize the distribution of title length.
+- Count Plot: To show distribution across sentiment classes.
+- Pie Chart: To depict the percentage of each sentiment class visually.
+
+#### Codebase Changes
+
+- Added `scripts/data_visualization.py` and `utils/visualization_helper.py` to manage visualization processes.
+- Produced new visualization images for enhanced data analysis communication.
+
+#### Future To-dos
+
+- Address data processing DAG refinement:
+  - `run_get_thread()`: Load today's post data.
+  - `run_get_news()`: Load today's news data.
+  - `run_update_sql()`: Integrate post and news data into the MySQL database.
+  - `update_csv_file()`: Export MySQL database to a CSV file.
+
+- Plan for the integration of automated chart generation in daily data processing.
+
+####mit Notes
+
+- Enhanced the data visualization aspect, addressing the challenge of:
+  - Visualizing complex data relationships.
+  - Understanding data distributions.
+  - Uncovering patterns and drawing meaningful conclusions from sentiment analysis data.
+- Today's updates are set to improve stakeholder understanding and engagement with sentiment analysis results.
+- Laid the groundwork for future integration into the daily analysis workflow, boosting our data storytelling abilities.
+
+---
+
