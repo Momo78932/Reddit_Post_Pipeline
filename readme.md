@@ -1,12 +1,11 @@
 # Reddit Post Sentiment Analysis Data Pipeline
 
-<div align="center">
-  <img alt="computer" src="https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif"><br>
-</div>
+![Cover Image](../image/cover.jpg "Intro image")
+
 
 ## Project Overview
 ### Objective
-To build a data pipeline that gathers and analyzes Reddit post data based on user-defined interests.
+This project aims to automate the collection and analysis of Reddit post data and news headlines to assist in sentiment classification, which is essential for investigating public opinion trends.
    
 
 ## Table of Contents
@@ -14,30 +13,102 @@ To build a data pipeline that gathers and analyzes Reddit post data based on use
 - [Project Overview](#project-overview)
 - [Table of Contents](#table-of-contents)
 - [Architecture](#architecture)
-- [Installation and Setup](#installation-and-setup)
+- [Environment Setup](#installation-and-setup)
 - [Improvements](#improvements)
 - [Acknowledgements](#acknowledgements)
 
 
 
 ## Architecture
-![My Project Diagram](./image/flowchart.png "Project flowchart")
+![Work Flow Tree](../image/workflow.png "workflow image")
+### Workflow Automation with Airflow
+#### Step 1: Load Data
+- **Reddit Data**: Utilize `PRAW` (Python Reddit API Wrapper) to collect daily Reddit post data.
+  - Check for post uniqueness using `Redis`.
+  - Store posts for analysis in `MongoDB`.
+- **News Data**: Use `Requests` library to fetch data from `Newsapi.org`.
+  - Store news headlines in `MongoDB`.
+
+#### Step 2: Data Storage & Processing
+- Use the `TextBlob` library to compute polarity and subjectivity for post titles and news titles.
+- Organize the computed data into a `MySQL` database.
+
+#### Step 3: Output
+- Export data from the MySQL database as a CSV file into the project folder.
+
+#### Step 4: Visualization and Analysis
+- **Visualization**: Generate various charts and graphs using `Seaborn` and `Matplotlib`:
+  - `Joint Plot`: Analyze the relationship between post subjectivity and polarity.
+  - `Point Plot`: Correlate news polarity with post polarity.
+  - `Box Plot`: Visualize the distribution of title length.
+  - `Count Plot`: Display distribution across sentiment classes.
+  - `Pie Chart`: Show the percentage of each sentiment class.
+- **Analysis**: Train a model to predict sentiment classes ranging from very positive to very negative.
+
+### End-User Impact
+
+The project provides end-users with insightful visualizations and analyses to understand public sentiment trends better using data collected and processed through an automated pipeline.
+
+### Technologies Used
+- `Python`
+- `Airflow`
+- `PRAW`
+- `Redis`
+- `MongoDB`
+- `MySQL`
+- `TextBlob`
+- `CSV`
+- `Seaborn` and `Matplotlib` for data visualization
 
 
-### Process Flow
+### Project Folder Tree
+```
+├── dags
+│   ├── redditpost_etl_dag.py
+│   └── testdag.py
+├── image
+│   ├── Subjectivity_vs_Polarity_joint_plot.png
+│   ├── cover.jpg
+│   ├── news_polarity_vs_post_polarity_point_plot.png
+│   ├── sentiment_class_countplot.png
+│   ├── sentiment_class_pie_chart.png
+│   └── title_length_boxplot.png
+├── md_file
+│   ├── charts.md
+│   └── dev_log.md
+├── output
+│   ├── news_output.csv
+│   └── posts_output.csv
+├── readme.md
+├── scripts
+│   ├── SQL
+│   │   ├── backfill_sql_db.py
+│   │   ├── create_table.sql
+│   │   ├── interact_with_sql_db_query.py
+│   │   └── mysql_table.md
+│   ├── __init__.py
+│   ├── data_visualization.py
+│   ├── get_reddit_thread.py
+│   ├── news
+│   │   ├── __init__.py
+│   │   └── backfill_news.py
+│   └── post_sentiment_processing.py
+├── secrets.ini
+└── utilis
+    ├── __init__.py
+    ├── load_mysql_data.py
+    ├── mongodb_helper.py
+    ├── mysql_helper.py
+    ├── news_helper.py
+    ├── reddit_helper.py
+    ├── redis_helper.py
+    ├── settings.py
+    ├── subredditTopics.txt
+    └── visualization_helper.py
+├── .gitignore
+ ```
 
-- **Data Source**: Utilizes the Reddit API, interfaced with the Python `praw` library.
-- **User Input**: Interests specified in `subredditTopics.txt` to guide data collection.
-- **Duplication Check**: Unique post IDs checked against Redis database for uniqueness.
-- **Data Ingestion**: Retrieves a set number of posts per subreddit topic, containing titles and bodies, configured in `settings.txt`.
-- **Sentiment Analysis**: Conducted in a MySQL database.
-- **Automation**: Managed by two AirFlow schedulers for stream processing and data storage, typically executed near day's end.
-- **Data Visualization**: Tableau visualizes sentiment analysis results from MySQL database.
-- **End Result**: Users interact with a dashboard displaying sentiment trends across Reddit topics.
-   
 
-    
-![My Project Diagram](./image/tb_dashboard.png "Tableau dashboard")
 
 ## Installation and Setup
 
