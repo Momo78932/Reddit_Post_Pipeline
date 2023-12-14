@@ -1,6 +1,6 @@
 # Reddit Post Sentiment Analysis Data Pipeline
 
-![Cover Image](../image/cover.jpg "Intro image")
+![Cover Image](./image/cover.jpg "Intro image")
 
 
 ## Project Overview
@@ -20,7 +20,7 @@ This project aims to automate the collection and analysis of Reddit post data an
 
 
 ## Architecture
-![Work Flow Tree](../image/workflow.png "workflow image")
+![Work Flow Tree](./image/workflow.png "workflow image")
 ### Workflow Automation with Airflow
 #### Step 1: Load Data
 - **Reddit Data**: Utilize `PRAW` (Python Reddit API Wrapper) to collect daily Reddit post data.
@@ -80,6 +80,7 @@ The project provides end-users with insightful visualizations and analyses to un
 │   ├── news_output.csv
 │   └── posts_output.csv
 ├── readme.md
+├── .gitignore
 ├── scripts
 │   ├── SQL
 │   │   ├── backfill_sql_db.py
@@ -105,7 +106,6 @@ The project provides end-users with insightful visualizations and analyses to un
     ├── settings.py
     ├── subredditTopics.txt
     └── visualization_helper.py
-├── .gitignore
  ```
 
 
