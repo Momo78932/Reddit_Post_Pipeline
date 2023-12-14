@@ -20,10 +20,10 @@ mongodb_cred = {'mongo_user_id' : Configs['mongodb_cred']['user_id'],
 
 
 class mongodb_connection:
-    def __init__(self, mongodb_cred, db_name, collection_name):
-        user_id = mongodb_cred['mongo_user_id']
-        password = mongodb_cred['mongo_password']
-        cluster_name = mongodb_cred['mongo_cluster_name']
+    def __init__(self, mongodb_credential, db_name, collection_name):
+        user_id = mongodb_credential['mongo_user_id']
+        password = mongodb_credential['mongo_password']
+        cluster_name = mongodb_credential['mongo_cluster_name']
         self.cluster  = MongoClient(f'mongodb+srv://{user_id}:{password}@{cluster_name}.ybq4rku.mongodb.net/?retryWrites=true&w=majority')
         self.db = self.cluster[db_name]
         self.collection = self.db[collection_name]
