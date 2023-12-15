@@ -5,8 +5,7 @@
 
 ## Project Overview
 ### Objective
-This project aims to automate the collection and analysis of Reddit post data and news headlines to assist in sentiment classification, which is essential for investigating public opinion trends.
-   
+This project aims to investigate the impact of news sentiment on the sentiment of Reddit posts, specifically focusing on topics relevant to ChatGPT. Through sophisticated sentiment analysis, we explore the correlation between the tone of news headlines and the emotional responses evident in Reddit discussions
 
 ## Table of Contents
 
@@ -141,12 +140,7 @@ To set up the pipeline locally, first, you will have to set up a virtual environ
 | MySQL           | v14.14  |
 | TestBlob		  |v0.17.1  |
 
-* After installing testblob, remember to download necessary corpora used by TextBlob with code below
 
-```
-from textblob import download_corpora 
-download_corpora.download_all()
-```
  
  **Crediential File**
 You will then have to add a credentials file for accessing reddit API, MongoDB connection, and MySQL connection.  Then populate the `secrets.ini` file with the following template:
@@ -173,4 +167,4 @@ MySQL | password set at installation
 
 
 ## Improvements
-[Development Log](./md_file/dev_log.md)
+`Development Log`: [Development Log](./md_file/dev_log.md)
